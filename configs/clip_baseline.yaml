@@ -1,0 +1,26 @@
+DATA:
+  SIZE: [384,128]
+  BPE_PATH: './data/bpe_simple_vocab_16e6.txt.gz'
+MODEL:
+  NAME: 'clip'
+  PRETRAINED: 'ViT-B/16'
+  STRIDE: 16
+  HEAD: 
+    SDM_LOSS: True
+    CLIP_LOSS: False
+
+TRAIN:
+  EPOCH: 40
+  FREEZE_EPOCH: 0
+  BATCH_SIZE: 64
+
+  LR:
+    BASE_LR : 5e-5
+    DELAY: 5
+    WARMUP_EPOCH: 5
+
+EVAL:
+  EPOCH: 1
+
+TEST:
+  RESTORE_FROM: ./checkpoints/clip_baseline_ckpt.pth

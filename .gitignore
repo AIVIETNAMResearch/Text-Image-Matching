@@ -1,0 +1,7 @@
+data/*
+logs/*
+checkpoints/*
+wandb
+.idea
+.vscode
+__pycache__

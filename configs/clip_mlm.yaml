@@ -1,0 +1,33 @@
+DATA:
+  SIZE: [384,128]
+  BPE_PATH: './data/bpe_simple_vocab_16e6.txt.gz'
+  SAMPLE: -1
+MODEL:
+  NAME: 'clip_mlm'
+  PRETRAINED: 'ViT-B/16'
+  STRIDE: 16
+  CROSS_DEPTH: 4
+  HEAD: 
+    SDM_LOSS: True
+    CLIP_LOSS: False
+    ID_LOSS: True
+    TRIPLET_LOSS: False
+    ENABLE_MLM: True
+TRAIN:
+  EPOCH: 60
+  FREEZE_EPOCH: 0
+  BATCH_SIZE: 48
+  MODE: 'clip_mlm'
+  ENABLE_TEXT_AUG: True
+  LR:
+    BASE_LR : 1e-5
+    DELAY: 5
+    WARMUP_EPOCH: 1
+    MODE: cosine
+    LR_FACTOR: 5.
+
+EVAL:
+  EPOCH: 1
+
+TEST:
+  RESTORE_FROM: './logs/clip_multiview_mlm/checkpoint_70-89.pth'

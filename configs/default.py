@@ -1,0 +1,105 @@
+from yacs.config import CfgNode as CN
+import os
+import os.path as osp
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+_C = CN()
+
+dataset_path = os.path.join(BASE_DIR, "../data")
+
+# DATA process related configurations.
+_C.DATA = CN()
+_C.DATA.DATA_DIR = dataset_path
+_C.DATA.NAME = "CUHK-PEDES"
+_C.DATA.SIZE = [384, 128]
+_C.DATA.TEST_OUTPUT = "logs/Test_Output"
+_C.DATA.TRAIN_JSON_PATH = 'reid_raw.json'
+_C.DATA.TEST_JSON_PATH = 'reid_raw.json'
+_C.DATA.TEXT_MAX_LEN = 77
+_C.DATA.TEXT_TRUNCATE = True
+_C.DATA.BPE_PATH = './data/bpe_simple_vocab_16e6.txt'
+_C.DATA.MAX_NOUN_CHUNKS = 6
+_C.DATA.NUM_NEGS = 3
+_C.DATA.SAMPLE = 4000
+_C.DATA.CHUNKED_MLM = False
+_C.DATA.BACK_TRANSLATE = False
+# Model specific configurations.
+_C.MODEL = CN()
+
+_C.MODEL.PRETRAINED = ''
+_C.MODEL.STRIDE = 16
+_C.MODEL.VOCAB_SIZE = 49408
+_C.MODEL.NAME = "base" 
+_C.MODEL.NUM_CLASS = 11003 # 11003
+_C.MODEL.OUTPUT_SIZE = 512
+_C.MODEL.EMBED_DIM = 512
+_C.MODEL.DECODER_EMBED_DIM = 512
+_C.MODEL.DECODER_DEPTH = 4
+_C.MODEL.DECODER_HEADS = 16
+
+_C.MODEL.CROSS_DEPTH = 16
+_C.MODEL.HEAD = CN()
+_C.MODEL.BASE_MODEL = 'clip'
+_C.MODEL.HEAD.CLIP_LOSS = False
+_C.MODEL.HEAD.CLIP_LOSS_MARGIN = 0.
+_C.MODEL.HEAD.SDM_LOSS = False
+_C.MODEL.HEAD.SIMSIAM_LOSS = False
+_C.MODEL.HEAD.ID_LOSS = False
+_C.MODEL.HEAD.TRIPLET_LOSS = False
+_C.MODEL.HEAD.ENABLE_MLM = False
+_C.MODEL.HEAD.ENABLE_MAE = False
+_C.MODEL.HEAD.SELF_SDM = False
+_C.MODEL.MASK_RATIO = 0.5
+
+# Training configurations
+_C.TRAIN = CN()
+_C.TRAIN.ONE_EPOCH_REPEAT = 1
+_C.TRAIN.EPOCH = 400
+_C.TRAIN.BATCH_SIZE = 64
+_C.TRAIN.NUM_WORKERS = 6
+_C.TRAIN.PRINT_FREQ = 20
+_C.TRAIN.LR = CN()
+_C.TRAIN.LR.BASE_LR = 0.01
+_C.TRAIN.LR.WARMUP_EPOCH = 40
+_C.TRAIN.LR.DELAY = 120
+_C.TRAIN.LR.BIAS_LR_FACTOR = 2.
+_C.TRAIN.LR.MODE = "cosine"
+_C.TRAIN.LR.LR_FACTOR = 5.
+_C.TRAIN.LR.WARMUP_FACTOR = 1.
+_C.TRAIN.LR.GAMMA = 0.1
+
+_C.TRAIN.WEIGHT_DECAY = 4e-5
+_C.TRAIN.WEIGHT_DECAY_BIAS = 0.
+_C.TRAIN.ENABLE_TEXT_AUG = False
+_C.TRAIN.ENABLE_GRADIENT_ACCUMULATION = False
+_C.TRAIN.GRADIENT_ACCUMULATION_STEP = 4
+
+_C.TRAIN.BENCHMARK = False
+# _C.TRAIN.BENCHMARK = True  # set False for final training version
+_C.TRAIN.FREEZE_EPOCH = 0
+_C.TRAIN.SEED = 42
+_C.TRAIN.DETERMINISTIC = False
+_C.TRAIN.MODE = 'default' # 'default' or 'multiview'
+_C.TRAIN.DISCRIMINATOR = True
+_C.TRAIN.ADV_COEFF = 0.4
+_C.TRAIN.IN_FEATURES = 512
+_C.TRAIN.NODE_FEATURES = 512
+_C.TRAIN.EDGE_FEATURES = 512
+_C.TRAIN.NUM_INSTANCE = 4
+_C.TRAIN.MAX_NORM = 1000
+# Test configurations
+_C.TEST = CN()
+_C.TEST.RESTORE_FROM = None
+# _C.TEST.QUERY_JSON_PATH = "data/test-queries.json"
+_C.TEST.BATCH_SIZE = 128
+_C.TEST.NUM_WORKERS = 6
+_C.TEST.CONTINUE = ""
+
+_C.EVAL = CN()
+_C.EVAL.EPOCH = 20
+_C.EVAL.EVAL_BY_TEST = True
+_C.EVAL.EVAL_BY_TEST_NUM = 1  # eval_by_test epo = num * EVAL.EPOCH
+
+def get_default_config():
+    return _C.clone()

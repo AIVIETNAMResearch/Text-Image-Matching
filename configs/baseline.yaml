@@ -1,0 +1,17 @@
+DATA:
+  SIZE: 224
+
+MODEL:
+  NAME: "baseline"
+  TEXT_ENCODER: "roberta-large"
+  IMG_ENCODER: "efficientnet-b2"
+
+TRAIN:
+  EPOCH: 100
+  BATCH_SIZE: 32
+  FREEZE_EPOCH: 30 
+
+  LR:
+    BASE_LR : 0.01
+    DELAY: 60
+    WARMUP_EPOCH: 10

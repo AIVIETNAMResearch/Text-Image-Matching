@@ -1,0 +1,47 @@
+DATA:
+  SIZE: [384,128]
+  BPE_PATH: './data/bpe_simple_vocab_16e6.txt.gz'
+  SAMPLE: -1
+  NAME: "CUHK-PEDES"
+  #TRAIN_JSON_PATH: "data_captions.json"
+  #TEST_JSON_PATH: "data_captions.json"
+
+MODEL:
+  NAME: 'clip_multiview_mlm'
+  PRETRAINED: 'ViT-B/16'
+  STRIDE: 16
+  CROSS_DEPTH: 4
+  NUM_CLASS: 11003
+  MASK_RATIO: 0.5
+  HEAD: 
+    SDM_LOSS: True
+    CLIP_LOSS: False
+    ID_LOSS: True
+    SIMSIAM_LOSS: True
+    TRIPLET_LOSS: False
+    ENABLE_MLM: True
+    ENABLE_MAE: True
+    SELF_SDM: True
+
+TRAIN:
+  EPOCH: 60
+  FREEZE_EPOCH: 0
+  BATCH_SIZE: 96
+  MODE: 'multiview_mlm'
+  ENABLE_TEXT_AUG: True
+  ENABLE_GRADIENT_ACCUMULATION: False
+  GRADIENT_ACCUMULATION_STEP: 4
+
+  LR:
+    BASE_LR: 1e-5
+    DELAY: 5
+    WARMUP_EPOCH: 5 
+    MODE: cosine
+    LR_FACTOR: 5.
+    WARMUP_FACTOR: .1
+
+EVAL:
+  EPOCH: 1
+
+TEST:
+  RESTORE_FROM: './logs/clip_multiview_mlm/checkpoint_mlm_74-042.pth'

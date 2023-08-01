@@ -1,0 +1,32 @@
+DATA:
+  SIZE: [384,128]
+  BPE_PATH: './data/bpe_simple_vocab_16e6.txt.gz'
+MODEL:
+  NAME: 'clip_multiview'
+  PRETRAINED: 'ViT-B/16'
+  STRIDE: 16
+  HEAD: 
+    SDM_LOSS: True
+    CLIP_LOSS: False
+    ID_LOSS: True
+    SIMSIAM_LOSS: True
+    TRIPLET_LOSS: False
+    ENABLE_MLM: False
+
+TRAIN:
+  EPOCH: 50
+  FREEZE_EPOCH: 0
+  BATCH_SIZE: 32
+  MODE: 'multiview'
+  ENABLE_TEXT_AUG: True
+  LR:
+    BASE_LR : 1e-5
+    DELAY: 5
+    WARMUP_EPOCH: 5
+    LR_FACTOR: 5.
+
+EVAL:
+  EPOCH: 1
+
+TEST:
+  RESTORE_FROM: './logs/clip_multiview_text_aug/checkpoint_70-981.pth'

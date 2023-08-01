@@ -1,0 +1,16 @@
+cv2
+colorlog
+ftfy
+numpy
+Pillow
+Pillow
+regex
+spacy
+tabulate
+tensorboardX
+termcolor
+timm
+tqdm
+transformers
+yacs
+wandb
